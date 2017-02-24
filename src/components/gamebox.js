@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ Component } from 'react';
 
 /**
  * 获取颜色偏离值
@@ -36,7 +36,7 @@ function getColor(offset) {
 
 
 
-class GameBox extends React.Component {
+class GameBox extends Component {
 
     constructor(props){
         super(props);
@@ -67,19 +67,18 @@ class GameBox extends React.Component {
         return spanArr;
     }
 
-    componentWillReceiveProps(nextPorps){
-        console.log('componentWillReceiveProps');
+    /**
+     * 暂停的时候会引起Room组件中的更新，也会导致当前的GameBox更新，触发一次渲染，即使没有任何新的属性变化
+     * 但是重新渲染在这里会引起问题，就是render中有很多涉及random导致颜色值改变，所以必须在这里判断
+     * 除了lv的变化会导致更新
+     */
+    shouldComponentUpdate(nextProps, nextState){
+        return nextState.lv != this.state.lv;
     }
 
-    shouldComponentUpdate(){
-        console.log('shouldComponentUpdate');
-        return true;
-    }
-
-    componentWillUnmount(){
-        console.log('componentWillUnmount');
-    }
-
+    /**
+     * 处理点击
+     */
     handleClick(e){
         /** 有key存在表示点中的是目标span*/
         if(e.target.dataset.key){
@@ -90,19 +89,13 @@ class GameBox extends React.Component {
 
 
     render() {
-        // this.lv = this.props.lv;
-        let lv = this.state.lv;
-        this.offset = getOffset(this.lvMap, lv);
-        let { color, offsetColor } = getColor(this.offset);
-
-        let spanArr = GameBox.getSpan(this.lvMap[lv],color, offsetColor);
+        let lv = this.state.lv;                                            /* 获取当前等级(也是积分) */
+        this.offset = getOffset(this.lvMap, lv);                           /* 获取偏离数值 */
+        let { color, offsetColor } = getColor(this.offset);                /* 获取正常颜色和偏离颜色 */
+        let spanArr = GameBox.getSpan(this.lvMap[lv],color, offsetColor);  /* 获取所有的span */
 
         return (
             <div id="box" className={`lv${this.lvMap[lv]}`} style={{width: '500px', height: '500px'}}  onClick={this.handleClick.bind(this)}>
-                {/*<span style={{backgroundColor: 'rgb(217, 217, 136)'}}></span>*/}
-                {/*<span style={{backgroundColor: 'rgb(102, 102, 21)'}}></span>*/}
-                {/*<span style={{backgroundColor: 'rgb(102, 102, 21)'}}></span>*/}
-                {/*<span style={{backgroundColor: 'rgb(102, 102, 21)'}}></span>*/}
                 { spanArr}
             </div>
         );
