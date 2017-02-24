@@ -24,13 +24,13 @@ function getColor(offset) {
         g1 = Math.round(Math.random() * random),
         b1 = Math.round(Math.random() * random);
     let r2 = r1 + offset + 10,
-        g2 = r1 + offset + 10,
-        b2 = r1 + offset + 10;
+        g2 = g1 + offset + 10,
+        b2 = b1 + offset + 10;
     let color = `rgb(${r1},${g1},${b1})`;
-    let wrongColor = `rgb(${r2},${g2},${b2})`;
+    let offsetColor = `rgb(${r2},${g2},${b2})`;
     return {
         color: color,
-        wrongColor: wrongColor
+        offsetColor: offsetColor
     };
 }
 
@@ -41,21 +41,28 @@ class GameBox extends React.Component {
     constructor(props){
         super(props);
         this.lvMap = [2, 3, 4, 5, 5, 6, 6, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9];
-        this.lv = 0;   //当前的等级，也是得分，过一关得一分
         this.offset = 10;
+        this.state = {
+            lv: 0
+        }
     }
 
-
-    getSpan(degree, color, wrongColor){
-        let num = degree * degree;
-        let wrongKey = Math.floor(Math.random() * num);
-        let spanArr = [];
-        for(let i=0;i<num;i++){
-            if(i == wrongKey){
-                spanArr.push(<span key={i} style={{backgroundColor: wrongColor}}></span>);
-            }else{
+    /**
+     * 获取所有span的数组
+     * @param degree       当前的关卡等级
+     * @param color        正常的颜色
+     * @param offsetColor  偏移的颜色值
+     * @returns {Array}    返回包含所有span的数组
+     */
+    static getSpan(degree, color, offsetColor) {
+        let num = degree * degree;                      /* span的数目*/
+        let keyIndex = Math.floor(Math.random() * num); /* 偏移色的索引位置*/
+        let spanArr = [];                               /* 存储span的数组*/
+        for (let i = 0; i < num; i++) {
+            if (i == keyIndex)
+                spanArr.push(<span key={i} style={{backgroundColor: offsetColor}} data-key="true"></span>);
+            else
                 spanArr.push(<span key={i} style={{backgroundColor: color}}></span>);
-            }
         }
         return spanArr;
     }
@@ -66,24 +73,32 @@ class GameBox extends React.Component {
 
     shouldComponentUpdate(){
         console.log('shouldComponentUpdate');
-        return false;
+        return true;
     }
 
     componentWillUnmount(){
         console.log('componentWillUnmount');
     }
 
+    handleClick(e){
+        /** 有key存在表示点中的是目标span*/
+        if(e.target.dataset.key){
+            let lv = this.state.lv +1;
+            this.setState( { lv: lv } );
+        }
+    }
+
 
     render() {
         // this.lv = this.props.lv;
-        this.lv = 2;
-        this.offset = getOffset(this.lvMap, this.lv);
-        let { color, wrongColor } = getColor(this.offset);
+        let lv = this.state.lv;
+        this.offset = getOffset(this.lvMap, lv);
+        let { color, offsetColor } = getColor(this.offset);
 
-        let spanArr = this.getSpan(this.lvMap[this.lv],color,wrongColor);
+        let spanArr = GameBox.getSpan(this.lvMap[lv],color, offsetColor);
 
         return (
-            <div id="box" className="lv4" style={{width: '500px', height: '500px'}}>
+            <div id="box" className={`lv${this.lvMap[lv]}`} style={{width: '500px', height: '500px'}}  onClick={this.handleClick.bind(this)}>
                 {/*<span style={{backgroundColor: 'rgb(217, 217, 136)'}}></span>*/}
                 {/*<span style={{backgroundColor: 'rgb(102, 102, 21)'}}></span>*/}
                 {/*<span style={{backgroundColor: 'rgb(102, 102, 21)'}}></span>*/}
