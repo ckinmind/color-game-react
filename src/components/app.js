@@ -30,7 +30,7 @@ class App extends React.Component {
                 loading: 'hide',
                 index: ''
             });
-        },2000);
+        },1000);
     }
 
     showRoom(){
