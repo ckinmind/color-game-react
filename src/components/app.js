@@ -3,9 +3,6 @@ import 'styles/m.min.css';
 import Index from './index';
 import Room from './room';
 import Loading from './loading';
-import Pause from './pause';
-import Gameover from './gameover';
-
 
 class App extends React.Component {
     constructor(props) {
@@ -15,12 +12,7 @@ class App extends React.Component {
             loading: '',
             index: 'hide',
             room: 'hide',
-            dialog: 'hide',
-            pause: 'hide',
-            gameover: 'hide',
-
-            isPause: false,
-            timeCounting: false,
+            startCount: false,
         }
     }
 
@@ -37,50 +29,18 @@ class App extends React.Component {
         this.setState({
             index: 'hide',
             room: '',
-            timeCounting: true
-        });
-    }
-    showPause(){
-        console.log('showPause');
-        this.setState({
-            pause: '',
-            isPause: true
-        });
-    }
-
-    showGameover(){
-        console.log('showGameover');
-        this.setState({
-            pause: 'hide',
-            gameover: ''
-        });
-    }
-
-    handleGoOn(){
-        console.log('handleGoOn');
-        this.setState({
-            pause: 'hide',
-            isPause: false
+            startCount: true
         });
     }
 
 
     render() {
-        let {loading, index, room, pause, gameover } = this.state;
+        let {loading, index, room } = this.state;
         return (
             <div className="grid">
                 <Loading display={ loading }/>
                 <Index   display={ index } showRoom={ this.showRoom.bind(this) }/>
-                <Room    display={ room }
-                         timeCounting={this.state.timeCounting}
-                         showPause={this.showPause.bind(this)}
-                         showGameover={this.showGameover.bind(this)}
-                         isPause={this.state.isPause}
-                />
-                <Pause  display={ pause}
-                        GoOn={this.handleGoOn.bind(this)}
-                />
-                <Gameover display={ gameover }/>
+                <Room    display={ room }  startCount={this.state.startCount}/>
             </div>
         );
     }
