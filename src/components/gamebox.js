@@ -2,12 +2,12 @@ import React,{ Component } from 'react';
 
 /**
  * 获取颜色偏离值
- * @param lvMap 关卡地图(存储每关的一列数目)
+ * @param degree 当前关卡的一行数目，对应lvMap[lv],若无则为9
  * @param lv    当前关卡(也是积分，第几关)
  */
-function getOffset(lvMap, lv){
-    let offset = 15 * Math.max(9 - lvMap[lv], 1); /** 颜色偏离值和当前的关卡数相关 */
-    offset = lv > 20 ? 10 : offset;
+function getOffset(degree = 9, lv){
+    let offset = 15 * Math.max(9 - degree, 1); /** 颜色偏离值和当前的关卡数相关，当关卡即lvMap[lv]=8 之后，offset恒为15 */
+    offset = lv > 20 ? 10 : offset;               /** 随着lv变大，offset偏离值编写，颜色越加接近 */
     offset = lv > 40 ? 8 : offset;
     offset = lv > 50 ? 5 : offset;
     return offset;
@@ -35,13 +35,12 @@ function getColor(offset) {
 }
 
 
-
 class GameBox extends Component {
 
     constructor(props){
         super(props);
-        this.lvMap = [2, 3, 4, 5, 5, 6, 6, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9];
-        this.offset = 10;
+        this.lvMap = [2, 3, 4, 5, 5, 6, 6, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9]; /*存储对应索引关卡的一行span数目*/
+        this.offset = 0;
         this.state = {
             lv: 0
         }
@@ -49,12 +48,12 @@ class GameBox extends Component {
 
     /**
      * 获取所有span的数组
-     * @param degree       当前的关卡等级
+     * @param degree       当前关卡的一行数目，对应lvMap[lv],若无则为9
      * @param color        正常的颜色
      * @param offsetColor  偏移的颜色值
      * @returns {Array}    返回包含所有span的数组
      */
-    static getSpan(degree, color, offsetColor) {
+    static getSpan(degree = 9, color, offsetColor) {
         let num = degree * degree;                      /* span的数目*/
         let keyIndex = Math.floor(Math.random() * num); /* 偏移色的索引位置*/
         let spanArr = [];                               /* 存储span的数组*/
@@ -76,9 +75,7 @@ class GameBox extends Component {
         return nextState.lv != this.state.lv;
     }
 
-    /**
-     * 处理点击
-     */
+    /** 处理点击 */
     handleClick(e){
         /** 有key存在表示点中的是目标span*/
         if(e.target.dataset.key){
@@ -89,13 +86,17 @@ class GameBox extends Component {
 
 
     render() {
-        let lv = this.state.lv;                                            /* 获取当前等级(也是积分) */
-        this.offset = getOffset(this.lvMap, lv);                           /* 获取偏离数值 */
-        let { color, offsetColor } = getColor(this.offset);                /* 获取正常颜色和偏离颜色 */
-        let spanArr = GameBox.getSpan(this.lvMap[lv],color, offsetColor);  /* 获取所有的span */
+        let lv = this.state.lv;                                          /* 获取当前等级(也是积分) */
+        let degree = this.lvMap[lv] || 9;                                /* */
+        this.offset = getOffset(degree, lv);                             /* 获取偏离数值 */
+        console.log('offset: '+ this.offset);
+        console.log('lv: '+ this.state.lv);
+
+        let { color, offsetColor } = getColor(this.offset);              /* 获取正常颜色和偏离颜色 */
+        let spanArr = GameBox.getSpan(degree, color, offsetColor);       /* 获取所有的span */
 
         return (
-            <div id="box" className={`lv${this.lvMap[lv]}`} style={{width: '500px', height: '500px'}}  onClick={this.handleClick.bind(this)}>
+            <div id="box" className={`lv${degree}`} style={{width: '500px', height: '500px'}}  onClick={this.handleClick.bind(this)}>
                 { spanArr}
             </div>
         );
