@@ -18,22 +18,25 @@ class Room extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextPorps){
-    }
-
     gameGoOn(){
         this.setState({isPause: false});
     }
-
-
 
     handlePause(){
         this.setState({isPause: true});
     }
 
     showGameover(){
-        console.log('showGameover');
         this.setState({isGameOver:true});
+    }
+
+    rePlay(){
+        this.setState({
+            time: 10,
+            isPause: false,
+            isGameOver: false,
+            lv: 0
+        });
     }
 
 
@@ -57,7 +60,9 @@ class Room extends React.Component {
         return (
             <div className={`page ${this.props.display}`} id="room">
                 <header>
-                    <span className="lv">得分:<em>1</em></span>
+                    <span className="lv">
+                        得分:<em>{this.state.lv}</em>
+                    </span>
                     <Time startCount={this.props.startCount}
                           showGameover={this.showGameover.bind(this)}
                           isPause={this.state.isPause}
@@ -69,8 +74,14 @@ class Room extends React.Component {
                     { spanArr}
                 </div>
 
-                <Pause isPause={this.state.isPause} gameGoOn={this.gameGoOn.bind(this)}/>
-                <GameOver isGameOver={this.state.isGameOver}/>
+                <Pause isPause={this.state.isPause}
+                       gameGoOn={this.gameGoOn.bind(this)}
+                       rePlay={this.rePlay.bind(this)}
+                />
+                <GameOver isGameOver={this.state.isGameOver}
+                          lv={this.state.lv}
+                          rePlay={this.rePlay.bind(this)}
+                />
             </div>
         );
     }

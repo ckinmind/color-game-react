@@ -12,7 +12,7 @@ class Pause extends React.Component {
                             <h3>游戏暂停</h3>
                             <div className="btn-wrap clearfix">
                                 <button className="btn btn-resume" onClick={this.props.gameGoOn}>继续</button>
-                                <button className="btn btn-restart">重来</button>
+                                <button className="btn btn-restart" onClick={this.props.rePlay}>重来</button>
                             </div>
                             <a href="" target="_blank" className="btn btn-boyaa">更多游戏</a>
                         </div>

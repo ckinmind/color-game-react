@@ -14,9 +14,9 @@ class GameOver extends React.Component {
     }
 
     render() {
-        // let lv = this.props.lv;
-        let lv = 20;
+        let lv = this.props.lv;
         let lvTitle = this.getLvTitle(lv);
+        let text =  lvTitle + 'lv'+ lv;
 
         return (
             <div className={`page ${this.props.isGameOver ? '' : 'hide'}`} id="dialog">
@@ -24,15 +24,11 @@ class GameOver extends React.Component {
 
                     <div className="content gameover">
                         <div className="inner-content">
-                            <h3>{ lvTitle + 'lv '+ lv }</h3>
+                            <h3>{ text }</h3>
                             {/*<p id="tips" style={{display:'none'}}>再得<em id="_score"></em>分，就可再打败<em id="_num"></em>万人</p>*/}
                             <div className="btn-wrap clearfix">
-                                <button id="mode" className="btn btn-play" data-type="color">
-                                    普通场
-                                </button>
-                                <button className="btn btn-restart">
-                                    重来
-                                </button>
+                                <button id="mode" className="btn btn-play" data-type="color">普通场</button>
+                                <button className="btn btn-restart" onClick={this.props.rePlay}>重来</button>
                             </div>
                             <a href="http://mp.weixin.qq.com/s?__biz=MjM5NzAzODA0Ng==&mid=200533929&idx=1&sn=95644f093189b86639325100da7f0c2a#rd"
                                target="_blank" className="btn btn-boyaa">
