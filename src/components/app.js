@@ -8,28 +8,40 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            /** 个组件的显示状态*/
-            loading: '',
-            index: 'hide',
-            room: 'hide',
-            startCount: false,
+            loading: true,   /* 加载页*/
+            index: false,    /* 首页*/
+            room: false      /* 游戏页*/
         }
     }
 
     componentDidMount(){
         setTimeout(()=>{
             this.setState({
-                loading: 'hide',
-                index: ''
+                loading: false,
+                index: true
             });
         },1000);
     }
 
+    /** 显示游戏页 */
     showRoom(){
         this.setState({
-            index: 'hide',
-            room: '',
-            startCount: true
+            index: false,
+            room: true
+        });
+    }
+
+    /**
+     * 重玩游戏
+     * 先销毁游戏页，再显示新的游戏也
+     */
+    rePlay(){
+        this.setState({
+            room: false
+        },function(){
+            this.setState({
+                room: true
+            });
         });
     }
 
@@ -40,7 +52,7 @@ class App extends React.Component {
             <div className="grid">
                 <Loading display={ loading }/>
                 <Index   display={ index } showRoom={ this.showRoom.bind(this) }/>
-                <Room    display={ room }  startCount={this.state.startCount}/>
+                { room ? <Room  rePlay={ this.rePlay.bind(this) } /> : null }
             </div>
         );
     }

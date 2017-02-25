@@ -10,7 +10,7 @@ class Index extends React.Component {
 
     render(){
         return (
-            <div className={`page ${this.props.display}`} id="index">
+            <div className={`page ${this.props.display ? '' : 'hide'}`} id="index">
                 <h1>看你有多色</h1>
 
                 <div id="help">找出所有色块里颜色不同的一个</div>
