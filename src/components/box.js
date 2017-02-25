@@ -6,11 +6,19 @@ class Box extends React.Component{
     constructor(props){
         super(props);
         this.lvMap = [2, 3, 4, 5, 5, 6, 6, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9]; /*存储对应索引关卡的一行span数目*/
+        this.width = '500px';
     }
 
+    /** 只当lv变化时才更新，其他的变化比如窗口变化，暂停等都不更新*/
     shouldComponentUpdate(nexrProps){
         return nexrProps.lv != this.props.lv
     }
+
+    /** 初始化初始宽度*/
+    componentWillMount(){
+        this.width = window.innerWidth > 520 ? '500px' : (window.innerWidth-20)+'px';
+    }
+
 
     render(){
         let lv = this.props.lv;                                     /* 获取当前等级(也是积分) */
@@ -20,8 +28,8 @@ class Box extends React.Component{
         let spanArr = getSpan(degree, color, offsetColor);          /* 获取所有的span */
 
         return(
-            <div id="box" className={`lv${degree}`} style={{width: '500px', height: '500px'}}  onClick={this.props.handleClick}>
-                { spanArr }
+            <div id="box" className={`test lv${degree}`} style={{width: this.width, height: this.width}} onClick={this.props.handleClick}>
+                    { spanArr }
             </div>
         );
     }

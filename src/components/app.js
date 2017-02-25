@@ -1,5 +1,4 @@
 import React from 'react';
-import 'styles/m.min.css';
 import Index from './index';
 import Room from './room';
 import Loading from './loading';

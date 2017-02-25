@@ -6,7 +6,7 @@ class Time extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            time: 10,
+            time: 60,
             isDanger: false
         };
     }
