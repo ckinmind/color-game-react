@@ -41,7 +41,18 @@ class Room extends React.Component {
         }
     }
 
+    /** 获取游戏span数组 */
+    // getSpanArr(){
+    //     let lv = this.state.lv;                                          /* 获取当前等级(也是积分) */
+    //     let degree = this.lvMap[lv] || 9;                                /* 获取一行的span数目值，如果没有则为9*/
+    //     this.offset = getOffset(degree, lv);                             /* 获取偏离数值 */
+    //     let { color, offsetColor } = getColor(this.offset);              /* 获取正常颜色和偏离颜色 */
+    //     let spanArr = getSpan(degree, color, offsetColor);               /* 获取所有的span */
+    //     return spanArr;
+    // }
+
     render(){
+
         let lv = this.state.lv;                                          /* 获取当前等级(也是积分) */
         let degree = this.lvMap[lv] || 9;                                /* 获取一行的span数目值，如果没有则为9*/
         this.offset = getOffset(degree, lv);                             /* 获取偏离数值 */
@@ -51,13 +62,13 @@ class Room extends React.Component {
         return (
             <div className="page" id="room">
                 <header>
-                    <span className="lv">得分:<em>{this.state.lv}</em></span>
+                    <span className="lv">得分: <em>{this.state.lv}</em></span>
                     <Time showGameOver={this.showGameOver.bind(this)} isPause={this.state.isPause} />
                     <span className="btn btn-pause" onClick={this.showGamePause.bind(this)}>暂停</span>
                 </header>
 
                 <div id="box" className={`lv${degree}`} style={{width: '500px', height: '500px'}}  onClick={this.handleClick.bind(this)}>
-                    { spanArr}
+                    { spanArr }
                 </div>
 
                 <Pause isPause={this.state.isPause} gameGoOn={this.gameGoOn.bind(this)} rePlay={this.props.rePlay}/>

@@ -11,41 +11,23 @@ class Time extends React.Component{
         };
     }
 
-    // componentWillReceiveProps(nextPorps){
-    //     console.log('time componentWillReceiveProps');
-    //     console.log(nextPorps);
-    //     if(nextPorps.startCount && !this.props.startCount) {
-    //        this.setTimeInterval();
-    //     }
-    //     /** 重来*/
-    //     if(nextPorps.isReStar && (nextPorps.isPause || nextPorps.isGameOver)){
-    //         this.setState({time:10,isDanger:false});
-    //         this.setTimeInterval();
-    //     }
-    // }
-
-    setTimeInterval(){
-        clearInterval(this.interval);
-        this.interval = setInterval(() => this.handleTime(), 1000);
-    }
-
     componentWillUnmount(){
         clearInterval(this.interval);
     }
 
-
     componentDidMount(){
-       this.setTimeInterval();
+       this.interval = setInterval(() => this.handleTime(), 1000);
     }
 
     /**
-     * <= 0 游戏结束
-     * < 6  加上一个danger的class
-     * 其他情况 正常减一秒
+     * 定时器的回调
+     * 1. this.props.isPause为true: 暂停游戏，time不变化
+     * 2. time = 0: 执行游戏结束的回调
+     * 3. time < 6: 时间减一秒，并且给span加上一个danger的class
+     * 4. 其他情况: 正常减一秒
      */
     handleTime(){
-        console.log('handleTime time: '+this.state.time);
-        if(this.props.isPause){   /* 暂停 */
+        if(this.props.isPause){
             return ;
         }
 
@@ -68,7 +50,11 @@ class Time extends React.Component{
             </span>
         );
     }
-
 }
+
+Time.propTypes = {
+    isPause: React.PropTypes.bool.isRequired,      /* 是否暂停游戏 */
+    showGameOver: React.PropTypes.func.isRequired   /* 游戏时间到了之后游戏结束的回调*/
+};
 
 export default Time

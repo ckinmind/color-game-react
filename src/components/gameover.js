@@ -1,6 +1,6 @@
 import React from 'react';
 
-const lvTitle = ["瞎子", "色盲", "色郎", "色狼", "色鬼", "色魔", "超级色魔", "变态色魔", "孤独求色"];
+const lvTitle = ['瞎子', '色盲', '色郎', '色狼', '色鬼', '色魔', '超级色魔', '变态色魔', '孤独求色'];
 
 function getLvTitle(lv){
     let index = 20 > lv ? 0 : Math.ceil((lv - 20) / 10);
