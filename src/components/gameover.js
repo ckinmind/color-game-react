@@ -1,46 +1,39 @@
 import React from 'react';
 
-class GameOver extends React.Component {
+const lvTitle = ["瞎子", "色盲", "色郎", "色狼", "色鬼", "色魔", "超级色魔", "变态色魔", "孤独求色"];
 
-    constructor(props){
-        super(props);
-        this.lvTitle = ["瞎子", "色盲", "色郎", "色狼", "色鬼", "色魔", "超级色魔", "变态色魔", "孤独求色"];
-    }
+function getLvTitle(lv){
+    let index = 20 > lv ? 0 : Math.ceil((lv - 20) / 10);
+    let title = lvTitle[index] || lvTitle[lvTitle.length-1];
+    return title + 'Lv'+lv;
+}
 
-    getLvTitle(lv){
-        let index = 20 > lv ? 0 : Math.ceil((lv - 20) / 10);
-        let title = this.lvTitle[index] || this.lvTitle[this.lvTitle.length-1];
-       return title;
-    }
 
-    render() {
-        let lv = this.props.lv;
-        let lvTitle = this.getLvTitle(lv);
-        let text =  lvTitle + 'lv'+ lv;
+const GameOver = ({isGameOver, lv, rePlay}) => (
+    <div className={`page ${isGameOver ? '' : 'hide'}`} id="dialog">
+        <div className="inner">
 
-        return (
-            <div className={`page ${this.props.isGameOver ? '' : 'hide'}`} id="dialog">
-                <div className="inner">
-
-                    <div className="content gameover">
-                        <div className="inner-content">
-                            <h3>{ text }</h3>
-                            {/*<p id="tips" style={{display:'none'}}>再得<em id="_score"></em>分，就可再打败<em id="_num"></em>万人</p>*/}
-                            <div className="btn-wrap clearfix">
-                                <button id="mode" className="btn btn-play" data-type="color">普通场</button>
-                                <button className="btn btn-restart" onClick={this.props.rePlay}>重来</button>
-                            </div>
-                            <a href="http://mp.weixin.qq.com/s?__biz=MjM5NzAzODA0Ng==&mid=200533929&idx=1&sn=95644f093189b86639325100da7f0c2a#rd"
-                               target="_blank" className="btn btn-boyaa">
-                                更多游戏
-                            </a>
-                        </div>
+            <div className="content gameover">
+                <div className="inner-content">
+                    <h3>{ getLvTitle(lv) }</h3>
+                    {/*<p id="tips" style={{display:'none'}}>再得<em id="_score"></em>分，就可再打败<em id="_num"></em>万人</p>*/}
+                    <div className="btn-wrap clearfix">
+                        <button id="mode" className="btn btn-play" data-type="color">普通场</button>
+                        <button className="btn btn-restart" onClick={rePlay}>重来</button>
                     </div>
-
+                    <a href="" target="_blank" className="btn btn-boyaa">更多游戏</a>
                 </div>
             </div>
-        );
-    }
-}
+
+        </div>
+    </div>
+);
+
+
+GameOver.propTypes = {
+    isGameOver: React.PropTypes.bool.isRequired,    /* 是否显示GameOver组件 */
+    lv: React.PropTypes.number.isRequired,          /* 当前关卡 */
+    rePlay: React.PropTypes.func.isRequired         /* 重玩游戏 */
+};
 
 export default GameOver;
