@@ -1,5 +1,7 @@
 # color-game-react
-react版本的看你有多色游戏
+![](https://raw.githubusercontent.com/ckinmind/color-game-react/master/src/images/screenshot.gif)
+
+react版本的看你有多色游戏, 在线访问[https://ckinmind.github.io/color-game-react/](https://ckinmind.github.io/color-game-react/)
 
 ## 项目说明
 - 本项目是改写项目, 将非React实现的项目改为由React实现
