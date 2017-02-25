@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
 //import 'styles/main.scss';
-import 'styles/m.min.css';
+import 'styles/main.css';
 
 // Render the main component into the dom
 ReactDOM.render(<App />, document.getElementById('app'));
